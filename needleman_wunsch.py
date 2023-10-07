@@ -72,4 +72,23 @@ def needleman_wunsch(seq_v, seq_w, matriz_substituicao, penalidade_gap=0):
                 matriz[i][j].score = score_cima
                 matriz[i][j].direcao = Direcao.CIMA
 
-    print_matriz(matriz, seq_v, seq_w)
+    k, m = i, j
+    nova_seq_v = ""
+    nova_seq_w = ""
+
+    while k > 0 or m > 0:
+        if k > 0 and m > 0 and matriz[k][m].direcao == Direcao.DIAGONAL:
+            nova_seq_v = seq_v[k - 1] + nova_seq_v
+            nova_seq_w = seq_w[m - 1] + nova_seq_w
+            k -= 1
+            m -= 1
+        elif m > 0 and matriz[k][m].direcao == Direcao.ESQUERDA:
+            nova_seq_v = "-" + nova_seq_v
+            nova_seq_w = seq_w[m - 1] + nova_seq_w
+            m -= 1
+        else:
+            nova_seq_v = seq_v[k - 1] + nova_seq_v
+            nova_seq_w = "-" + nova_seq_w
+            k -= 1
+
+    return (nova_seq_v, nova_seq_w)
